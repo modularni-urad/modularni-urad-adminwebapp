@@ -22,7 +22,7 @@ export default {
         })
         await axios.post(`${API}/login`, null, {
           headers: {
-            Authorization: `JWT ${res.data.token}`
+            Authorization: `JWT ${res.data}`
           }
         })
         this.$store.commit('login', Object.assign({}, this.$data.record))
