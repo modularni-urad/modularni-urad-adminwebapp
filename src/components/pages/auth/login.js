@@ -17,13 +17,14 @@ export default {
       try {
         this.$data.error = null
         this.$data.working = true
-        const res = await axios.post(`${AUTH_API}`, this.$data.record)
-        // await axios.post(`${API}/login`, null, {
-        //   headers: {
-        //     Authorization: `JWT ${res.data.token}`
-        //   }
-        // })
-        this.$store.commit('setToken', res.data)
+        const res = await axios.post(`${AUTH_API}`, this.$data.record, {
+          withCredentials: false
+        })
+        await axios.post(`${API}/login`, null, {
+          headers: {
+            Authorization: `JWT ${res.data.token}`
+          }
+        })
         this.$store.commit('login', Object.assign({}, this.$data.record))
         this.$router.push('/')
         return res.data

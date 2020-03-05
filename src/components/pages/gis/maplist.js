@@ -5,20 +5,11 @@ export default {
   data: () => {
     return {
       fields: [
-        {
-          key: 'title',
-          label: 'název',
-          sortable: true
-        },
-        {
-          key: 'writers',
-          label: 'zapisovatelé',
-          sortable: false
-        },
-        {
-          key: 'geomtype',
-          label: 'typ'
-        }
+        { key: 'id', label: 'ID' },
+        { key: 'title', label: 'název', sortable: true },
+        { key: 'writers', label: 'zapisovatelé', sortable: false },
+        { key: 'owner', label: 'vlastník', sortable: true },
+        { key: 'actions', label: 'Akce' }
       ],
       items: [],
       isBusy: false,
@@ -61,7 +52,13 @@ export default {
         :busy.sync="isBusy"
         :items="myProvider"
         :fields="fields"
-      ></b-table>
+      >
+        <template v-slot:cell(actions)="data">
+          <a v-bind:href="'/import/?layerid=' + data.item.id" target="_blank">
+            import
+          </a>
+        </template>
+      </b-table>
 
       <b-pagination
         v-model="currentPage"
