@@ -14,8 +14,10 @@ export default {
       items: [],
       isBusy: false,
       currentPage: 1,
-      totalRows: 30,
-      perPage: 3
+      totalRows: 0,
+      perPage: 10,
+      curr: null,
+      item: {}
     }
   },
   methods: {
@@ -23,15 +25,30 @@ export default {
       // Here we don't set isBusy prop, so busy state will be
       // handled by table itself
       this.isBusy = true
-      const promise = axios.get(`${API}/layers`)
+      const promise = axios.get(`${API}/layers?currentPage=${this.currentPage}`)
 
       return promise.then(res => {
-        // Here we could override the busy state, setting isBusy to false
         this.isBusy = false
-        return res.data
-      }).catch(error => {
+        this.totalRows = res.data.pagination.total
+        return res.data.data
+      }).catch(err => {
+        console.log(err)
+        this.isBusy = false
         return []
       })
+    },
+    add: function () {
+      this.$data.curr = null
+      this.$bvModal.show('modal-add')
+    },
+    edit: function (item) {
+      this.$data.curr = item
+      this.$bvModal.show('modal-add')
+    },
+    onItemSubmit: function (item) {
+      if (this.curr) {
+        Object.assign(this.curr, item)
+      }
     }
   },
   components: {
@@ -42,7 +59,7 @@ export default {
     <div>
       <h3 class="float-left">Mapy</h3>
       <div class="float-right">
-        <b-button variant="primary" v-b-modal.modal-add>+ Přidat</b-button>
+        <b-button variant="primary" @click="add">+ Přidat</b-button>
       </div>
       <b-table small striped hover sort-icon-left no-local-sorting
         id="maps-table"
@@ -53,9 +70,17 @@ export default {
         :items="myProvider"
         :fields="fields"
       >
+        <template v-slot:cell(title)="data">
+          <a href="javascript:void(0)" v-on:click="edit(data.item)">
+            {{data.item.title}}
+          </a>
+        </template>
         <template v-slot:cell(actions)="data">
           <a v-bind:href="'/import/?layerid=' + data.item.id" target="_blank">
-            import
+            importer
+          </a>,
+          <a v-bind:href="'/edit/?layerid=' + data.item.id" target="_blank">
+            editor
           </a>
         </template>
       </b-table>
@@ -67,8 +92,8 @@ export default {
         aria-controls="maps-table"
       ></b-pagination>
 
-      <b-modal id="modal-add" title="Přidat mapu" hide-footer>
-        <map-form></map-form>
+      <b-modal id="modal-add" title="Upravit mapu" hide-footer>
+        <map-form v-bind:onSubmit="onItemSubmit" v-bind:item="curr"></map-form>
       </b-modal>
     </div>
   </div>
