@@ -1,4 +1,4 @@
-/* global axios, API, _, moment */
+/* global axios, API */
 import MapForm from './mapform.js'
 
 export default {
@@ -25,7 +25,7 @@ export default {
       // Here we don't set isBusy prop, so busy state will be
       // handled by table itself
       this.isBusy = true
-      const promise = axios.get(`${API}/layers?currentPage=${this.currentPage}`)
+      const promise = axios.get(`${API}/gis/layers?currentPage=${this.currentPage}`)
 
       return promise.then(res => {
         this.isBusy = false

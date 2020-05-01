@@ -1,4 +1,4 @@
-/* global Vue, axios, API, _, minLength, required */
+/* global Vue, axios, API, _ */
 const validationMixin = window.vuelidate.validationMixin
 const validators = window.validators
 
@@ -40,8 +40,8 @@ export default Vue.extend({
     save () {
       this.sentdata = _.pick(this.$data, 'title', 'writers', 'settings')
       return this.$data.id
-        ? axios.put(`${API}/layers/${this.$data.id}`, this.sentdata)
-        : axios.post(`${API}/layers`, this.sentdata)
+        ? axios.put(`${API}/gis/layers/${this.$data.id}`, this.sentdata)
+        : axios.post(`${API}/gis/layers`, this.sentdata)
     },
     handleSubmit () {
       this.$v.$touch()
