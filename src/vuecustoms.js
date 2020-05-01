@@ -1,7 +1,7 @@
-/* global Vue, moment */
+/* global Vue */
 
 Vue.filter('formatDate', function (value) {
   if (value) {
-    return moment(String(value)).format('DD.MM.YYYY')
+    return value.format('DD.MM.YYYY')
   }
 })

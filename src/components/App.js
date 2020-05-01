@@ -23,6 +23,9 @@ export default {
           <li class="nav-item">
             <router-link class="nav-link" to="/maps">GIS</router-link>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/paro">PaRo</router-link>
+          </li>
         </ul>
       </div>
       <button v-if="$store.getters.userLogged" class="btn btn-warning"
