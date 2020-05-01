@@ -8,6 +8,11 @@ export default function (router) {
     state: {
       user: savedUser && JSON.parse(savedUser)
     },
+    getters: {
+      userLogged: state => {
+        return state.user !== null
+      }
+    },
     mutations: {
       logout: state => {
         state.user = null
@@ -30,7 +35,7 @@ export default function (router) {
         })
       },
       logout: async function (ctx, opts) {
-        await axios.post(`${API}/logout`)
+        await axios.post(`${API}/privateauth/logout`)
         localStorage.removeItem(KEY)
         router.push('/')
       },

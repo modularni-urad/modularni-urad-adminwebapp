@@ -15,17 +15,19 @@ export default {
     </button>
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <router-link class="nav-link" to="/">Domů</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" to="/maps">GIS</router-link>
-        </li>
-      </ul>
-      <button v-if="$store.state.user !== null" class="btn btn-warning"
-        v-on:click="$store.commit('logout')">
-        Odhlásit
+      <div v-if="$store.getters.userLogged">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <router-link class="nav-link" to="/">Domů</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/maps">GIS</router-link>
+          </li>
+        </ul>
+      </div>
+      <button v-if="$store.getters.userLogged" class="btn btn-warning"
+        v-on:click="$store.dispatch('logout')">
+        Odhlásit {{$store.state.user.email}}
       </button>
       <router-link v-else class="btn btn-primary" to="/login">
         Přihlásit

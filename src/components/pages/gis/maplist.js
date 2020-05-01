@@ -57,7 +57,11 @@ export default {
   template: `
   <div>
     <div>
-      <h3 class="float-left">Mapy</h3>
+      <b-breadcrumb class="float-left">
+        <b-breadcrumb-item to="/"><i class="fas fa-home"></i></b-breadcrumb-item>
+        <b-breadcrumb-item active>Mapy</b-breadcrumb-item>
+      </b-breadcrumb>
+
       <div class="float-right">
         <b-button variant="primary" @click="add">+ Přidat</b-button>
       </div>
@@ -76,10 +80,10 @@ export default {
           </a>
         </template>
         <template v-slot:cell(actions)="data">
-          <a v-bind:href="'/import/?layerid=' + data.item.id" target="_blank">
+          <a v-bind:href="'/gis/import/?layerid=' + data.item.id" target="_blank">
             importer
           </a>,
-          <a v-bind:href="'/edit/?layerid=' + data.item.id" target="_blank">
+          <a v-bind:href="'/gis/edit/?layerid=' + data.item.id" target="_blank">
             editor
           </a>
         </template>

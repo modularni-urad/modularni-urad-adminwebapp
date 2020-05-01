@@ -11,8 +11,8 @@ import MapList from './components/pages/gis/maplist.js'
 const router = new VueRouter({
   routes: [
     { path: '/login', component: Login },
-    { path: '/maps', component: MapList },
-    { path: '', component: Dashboard }
+    { path: '/maps', component: MapList, name: 'maplist' },
+    { path: '/', component: Dashboard, name: 'home' }
   ]
 })
 
