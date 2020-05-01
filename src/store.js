@@ -9,13 +9,10 @@ export default function (router) {
       user: savedUser && JSON.parse(savedUser)
     },
     mutations: {
-      logout: async state => {
-        await axios.post(`${API}/logout`)
+      logout: state => {
         state.user = null
-        localStorage.removeItem(KEY)
-        router.push('/')
       },
-      login: (state, profile) => {
+      profile: (state, profile) => {
         localStorage.setItem(KEY, JSON.stringify(profile))
         state.user = profile
       }
@@ -23,6 +20,25 @@ export default function (router) {
     actions: {
       toast: function (ctx, opts) {
         Vue.$toast.open(opts)
+      },
+      login: function (ctx, opts) {
+        return axios.post(`${API}/privateauth/login`, opts, {
+          withCredentials: false
+        }).then(res => {
+          this.commit('profile', res.data)
+          return res.data
+        })
+      },
+      logout: async function (ctx, opts) {
+        await axios.post(`${API}/logout`)
+        localStorage.removeItem(KEY)
+        router.push('/')
+      },
+      init: async function (ctx, opts) {
+        try {
+          const res = await axios.get(`${API}/profile`)
+          this.commit('profile', res.data.user)
+        } catch (_) {}
       }
     }
   })

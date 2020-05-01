@@ -1,5 +1,3 @@
-/* global axios, API, AUTH_API */
-
 export default {
   data: () => {
     return {
@@ -17,17 +15,8 @@ export default {
       try {
         this.$data.error = null
         this.$data.working = true
-        const res = await axios.post(`${AUTH_API}`, this.$data.record, {
-          withCredentials: false
-        })
-        await axios.post(`${API}/login`, null, {
-          headers: {
-            Authorization: `JWT ${res.data}`
-          }
-        })
-        this.$store.commit('login', Object.assign({}, this.$data.record))
+        await this.$store.dispatch('login', this.$data.record)
         this.$router.push('/')
-        return res.data
       } catch (err) {
         this.$data.error = err.response.data
         this.$data.errcount++
