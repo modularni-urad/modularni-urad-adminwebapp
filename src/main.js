@@ -9,14 +9,17 @@ import Dashboard from './components/pages/dashboard.js'
 import MapList from './components/pages/gis/maplist.js'
 
 import ParoCallsList from './components/pages/paro/call/list.js'
+import ParoProjectList from './components/pages/paro/proj/list.js'
+import ParoProjectDetail from './components/pages/paro/proj/detail.js'
 
 const router = new VueRouter({
   routes: [
     { path: '/login', component: Login },
     { path: '/maps', component: MapList, name: 'maplist' },
     { path: '/', component: Dashboard, name: 'home' },
-    { path: '/paro', component: ParoCallsList, name: 'paro_calllist' }
-    // { path: '/granty/vyzva/:call_id/zadost', component: GrantApply, name: 'grantapply' }
+    { path: '/paro', component: ParoCallsList, name: 'paro_calllist' },
+    { path: '/paro/:id', component: ParoProjectList, name: 'paro_projlist' },
+    { path: '/paro/project/:id', component: ParoProjectDetail, name: 'paro_projdetail' }
   ]
 })
 

@@ -80,9 +80,9 @@ export default {
         :fields="fields"
       >
         <template v-slot:cell(name)="data">
-          <a href="javascript:void(0)" v-on:click="edit(data.item)">
-            {{data.item.name}}
-          </a>
+          <router-link :to="{name: 'paro_projlist', params: {id: data.item.id}}">
+            {{ data.item.name }}
+          </router-link>
         </template>
         <template v-slot:cell(submission_start)="data">
           {{ data.item.submission_start | formatDate }}
