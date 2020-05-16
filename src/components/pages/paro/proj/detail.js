@@ -1,4 +1,4 @@
-/* global axios, API, marked */
+/* global axios, API, marked, prompt */
 
 export default {
   data: () => {
@@ -6,7 +6,8 @@ export default {
       loading: true,
       call: null,
       project: null,
-      support: null
+      support: null,
+      feedbacks: null
     }
   },
   created () {
@@ -20,7 +21,34 @@ export default {
       this.$data.project = p
       res = await axios.get(`${API}/paro/call/?id=${p.call_id}`)
       this.$data.call = res.data[0]
+      const UID = this.$store.getters.UID
+      res = await axios.get(`${API}/paro/feedback/${projID}?author=${UID}`)
+      this.$data.feedbacks = res.data
       this.$data.loading = false
+    },
+    addFeedback: async function () {
+      const { call, project, feedbacks } = this.$data
+      const message = prompt('zpráva')
+      if (message) {
+        const url = `${API}/paro/feedback/${call.id}/${project.id}`
+        try {
+          const res = await axios.post(url, { message })
+          feedbacks.push(res.data)
+        } catch (err) {
+          const message = err.response.data
+          this.$store.dispatch('toast', { message, type: 'error' })
+        }
+      }
+    },
+    resolveFeedback: async function (feedback) {
+      const { call } = this.$data
+      const url = `${API}/paro/feedback/${call.id}/${feedback.id}`
+      try {
+        await axios.put(url, { status: 'resolved' })
+        feedback.status = 'resolved'
+      } catch (err) {
+        this.$store.dispatch('toast', { message: err, type: 'error' })
+      }
     }
   },
   computed: {
@@ -51,10 +79,11 @@ export default {
 
         <img v-if="project.photo" :src="project.photo" class="card-img-top" alt="ilustrační foto">
 
-        <h5>{{project.desc}}</h5>
       </div>
 
       <div class="col-sm-12 col-md-6">
+        <p>Status: {{project.state}}</p>
+        <p>{{project.desc}}</p>
         <h3>Rozpočet</h3>
         <p>Celkem: {{project.total}}</p>
         <table class="table table-striped">
@@ -79,6 +108,29 @@ export default {
     <div class="row">
       <div class="col-sm-12">
         <p v-html="contentHTML"></p>
+
+        <h2>Mé posudky</h2>
+        <b-button v-if="call.status=='verif'" @click="addFeedback">Přidat</b-button>
+        <p v-else>Nejdou přidávat, fáze ověřování proveditelnosti:
+          {{ call.submission_end | formatDate }} - {{ call.thinking_start | formatDate }}</p>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Zpráva</th>
+              <th scope="col">Stav</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="i in feedbacks">
+              <td>{{ i.message }}</td>
+              <td>{{ i.status }}
+                <b-button v-if="i.status=='unresolved'" @click="resolveFeedback(i)">
+                  Vyřešeno
+                </b-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
