@@ -1,4 +1,4 @@
-/* global axios, API, marked, prompt */
+/* global axios, API, marked, prompt, moment */
 
 export default {
   data: () => {
@@ -33,7 +33,11 @@ export default {
         const url = `${API}/paro/feedback/${call.id}/${project.id}`
         try {
           const res = await axios.post(url, { message })
-          feedbacks.push(res.data)
+          const fb = Object.assign({
+            status: 'unresolved',
+            created: moment()
+          }, res.data)
+          feedbacks.push(fb)
         } catch (err) {
           const message = err.response.data
           this.$store.dispatch('toast', { message, type: 'error' })
@@ -92,7 +96,7 @@ export default {
               <th scope="col">Název</th>
               <th scope="col">Počet</th>
               <th scope="col">Cena</th>
-            </tr>
+            </tr>parofeedback
           </thead>
           <tbody>
             <tr v-for="i in budgetJSON">
@@ -113,24 +117,30 @@ export default {
         <b-button v-if="call.status=='verif'" @click="addFeedback">Přidat</b-button>
         <p v-else>Nejdou přidávat, fáze ověřování proveditelnosti:
           {{ call.submission_end | formatDate }} - {{ call.thinking_start | formatDate }}</p>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Zpráva</th>
-              <th scope="col">Stav</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="i in feedbacks">
-              <td>{{ i.message }}</td>
-              <td>{{ i.status }}
-                <b-button v-if="i.status=='unresolved'" @click="resolveFeedback(i)">
-                  Vyřešeno
-                </b-button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Vytvořeno</th>
+                <th scope="col">Zpráva</th>
+                <th scope="col">Stav</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="i in feedbacks">
+                <td>{{ i.created | longDate }}</td>
+                <td>{{ i.message }}</td>
+                <td>
+                  <i v-if="i.status==='resolved'" class="text-success fas fa-thumbs-up"></i>
+                  <i v-else class="text-danger fas fa-thumbs-down"></i>
+                  <b-button v-if="i.status=='unresolved'" @click="resolveFeedback(i)">
+                    Označit za vyřešeno
+                  </b-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

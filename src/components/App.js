@@ -20,10 +20,10 @@ export default {
           <li class="nav-item active">
             <router-link class="nav-link" to="/">Domů</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="$store.state.user.groups.indexOf('gisadmin') >= 0">
             <router-link class="nav-link" to="/maps">GIS</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="$store.state.user.groups.indexOf('parofeedback') >= 0">
             <router-link class="nav-link" to="/paro">PaRo</router-link>
           </li>
         </ul>

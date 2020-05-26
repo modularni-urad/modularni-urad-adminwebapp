@@ -69,7 +69,7 @@ export default {
         <b-breadcrumb-item active>Participativní rozpočet</b-breadcrumb-item>
       </b-breadcrumb>
 
-      <div class="float-right">
+      <div v-if="$store.state.user.groups.indexOf('paroadmin') >= 0" class="float-right">
         <b-button variant="primary" @click="add">+ Přidat</b-button>
       </div>
       <b-table small striped hover sort-icon-left no-local-sorting
