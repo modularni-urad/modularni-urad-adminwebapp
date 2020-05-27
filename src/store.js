@@ -13,7 +13,14 @@ export default function (router) {
       userLogged: state => {
         return state.user !== null
       },
-      UID: state => (state.user.id)
+      UID: state => (state.user.id),
+      isMember: state => group => {
+        try {
+          return state.user.groups.indexOf(group) >= 0
+        } catch (_) {
+          return false
+        }
+      }
     },
     mutations: {
       profile: (state, profile) => {
