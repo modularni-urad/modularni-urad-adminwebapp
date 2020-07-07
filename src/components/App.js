@@ -26,6 +26,9 @@ export default {
           <li class="nav-item" v-if="$store.getters.isMember('parofeedback')">
             <router-link class="nav-link" to="/paro">PaRo</router-link>
           </li>
+          <li class="nav-item" v-if="$store.getters.isMember('ankety')">
+            <router-link class="nav-link" to="/ankety">Ankety</router-link>
+          </li>
         </ul>
       </div>
       <button v-if="$store.getters.userLogged" class="btn btn-warning"
