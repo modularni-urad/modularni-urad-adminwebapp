@@ -1,5 +1,6 @@
 /* global axios, API */
 import ItemForm from './form.js'
+import HistoryModal from './history.js'
 
 export default {
   data: () => {
@@ -16,14 +17,15 @@ export default {
       isBusy: false,
       currentPage: 1,
       totalRows: 0,
-      perPage: 3,
+      perPage: 10,
       curr: null,
+      currHistory: null,
       item: {}
     }
   },
   methods: {
     myProvider (ctx) {
-      this.isBusy = true
+      // this.isBusy = true
       const promise = axios.get(`${API}/wm/points`, {
         params: {
           currentPage: this.currentPage,
@@ -31,14 +33,18 @@ export default {
         }
       })
       return promise.then(res => {
-        this.isBusy = false
+        // this.isBusy = false
         this.totalRows = res.data.pagination.total
+          ? res.data.pagination.total : this.totalRows
         return res.data.data
       }).catch(err => {
         console.log(err)
         this.isBusy = false
         return []
       })
+    },
+    setPageSize: function (newSize) {
+      this.perPage = newSize
     },
     add: function () {
       this.$data.curr = null
@@ -53,6 +59,10 @@ export default {
         Object.assign(this.curr, item)
       }
     },
+    openHistory: function (item) {
+      this.$data.currHistory = item
+      this.$bvModal.show('modal-history')
+    },
     saveState: function (item) {
       const r = prompt('Zadej současnou hodnotu na vodoměru')
       if (r) {
@@ -63,7 +73,8 @@ export default {
     }
   },
   components: {
-    'item-form': ItemForm
+    'item-form': ItemForm,
+    'history-modal': HistoryModal
   },
   template: `
   <div>
@@ -95,15 +106,15 @@ export default {
             {{data.item.dev_id}}
           </a>
         </template>
-        <template v-slot:cell(voting_start)="data">
-          {{ data.item.voting_start | formatDate }}
-        </template>
         <template v-slot:cell(actions)="data">
           <b-button size="sm" variant="danger" v-on:click="saveState(data.item)">
             <i class="fas fa-save"></i> uložit stav
           </b-button>
           <b-button size="sm" variant="primary" v-on:click="edit(data.item)">
             <i class="fas fa-edit"></i> upravit
+          </b-button>
+          <b-button size="sm" variant="info" v-on:click="openHistory(data.item)">
+            <i class="fas fa-clock"></i> historie
           </b-button>
         </template>
       </b-table>
@@ -115,8 +126,20 @@ export default {
         aria-controls="maps-table"
       ></b-pagination>
 
+      <b-dropdown id="pagesize-dropup" dropup text="Velikost stránky"
+        variant="primary" class="m-2">
+        <b-dropdown-item @click="setPageSize(5)">5</b-dropdown-item>
+        <b-dropdown-item @click="setPageSize(10)">10</b-dropdown-item>
+        <b-dropdown-item @click="setPageSize(50)">50</b-dropdown-item>
+      </b-dropdown>
+
       <b-modal size="xl" id="modal-add" title="Upravit" hide-footer>
         <item-form v-bind:onSubmit="onItemSubmit" v-bind:item="curr"></item-form>
+      </b-modal>
+
+      <b-modal size="xl" id="modal-history" title="Historie dat" hide-footer>
+        <history-modal v-model="currHistory">
+        </history-modal>
       </b-modal>
     </div>
   </div>
