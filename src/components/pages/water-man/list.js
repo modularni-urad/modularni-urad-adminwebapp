@@ -1,4 +1,4 @@
-/* global axios, API */
+/* global axios, API, prompt */
 import ItemForm from './form.js'
 import HistoryModal from './history.js'
 
@@ -67,8 +67,13 @@ export default {
       const r = prompt('Zadej současnou hodnotu na vodoměru')
       if (r) {
         axios.post(`${API}/wm/data/${item.id}`, { value: r })
-          .then(res => alert('ok'))
-          .catch(err => alert(err))
+          .then(res => {
+            this.$store.dispatch('toast', { message: 'uloženo' })
+          })
+          .catch(err => {
+            const message = err.response.data
+            this.$store.dispatch('toast', { message, type: 'error' })
+          })
       }
     }
   },
