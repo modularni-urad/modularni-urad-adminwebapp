@@ -6,8 +6,7 @@ export default {
   data: () => {
     return {
       fields: [
-        { key: 'id', label: 'ID' },
-        { key: 'app_id', label: 'App ID', sortable: true },
+        { key: 'id', label: 'ID', sortable: true },
         { key: 'dev_id', label: 'Dev ID', sortable: true },
         { key: 'battery', label: 'Baterie', sortable: true },
         { key: 'value', label: 'Stav', sortable: true },
@@ -25,21 +24,18 @@ export default {
   },
   methods: {
     myProvider (ctx) {
-      // this.isBusy = true
-      const promise = axios.get(`${API}/wm/points`, {
-        params: {
-          currentPage: this.currentPage,
-          perPage: this.perPage
-        }
-      })
+      const params = {
+        currentPage: this.currentPage,
+        perPage: this.perPage,
+        sort: ctx.sortBy ? `${ctx.sortBy}:${ctx.sortDesc ? 'desc' : 'asc'}` : 'id:asc'
+      }
+      const promise = axios.get(`${API}/wm/points`, { params })
       return promise.then(res => {
-        // this.isBusy = false
         this.totalRows = res.data.pagination.total
           ? res.data.pagination.total : this.totalRows
         return res.data.data
       }).catch(err => {
         console.log(err)
-        this.isBusy = false
         return []
       })
     },
