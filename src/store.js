@@ -1,7 +1,12 @@
-/* global Vue, Vuex, localStorage, API, axios */
+/* global Vue, Vuex, localStorage, API, axios, _ */
 
 const KEY = '_opencomm_user_'
 const savedUser = localStorage.getItem(KEY)
+const loadedUsers = {}
+
+Vue.filter('username', function (uid) {
+  return loadedUsers[uid] || 'unknown'
+})
 
 export default function (router) {
   //
@@ -53,6 +58,22 @@ export default function (router) {
         } catch (_) {}
       },
       handleError: function (ctx, opts) {
+      },
+      loadusers: function (ctx, opts) {
+        const toBeLoaded = _.filter(opts, i => !(i in loadedUsers))
+        if (toBeLoaded.length === 0) return
+        axios.get(`${API}/auth/uinfo/${toBeLoaded.join(',')}`)
+          .then(res => {
+            res.data.map(i => {
+              loadedUsers[i.id] = i.username
+            })
+          })
+          .catch(__ => {
+            console.log(`loaded: ${JSON.stringify(toBeLoaded)}`)
+            _.each(toBeLoaded, uid => {
+              loadedUsers[uid] = 'uživatel ' + uid
+            })
+          })
       }
     }
   })

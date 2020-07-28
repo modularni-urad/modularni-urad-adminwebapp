@@ -1,4 +1,4 @@
-/* global Vue, _, moment */
+/* global Vue, _, moment, VueBootstrapTypeahead, VueMarkdown */
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -13,3 +13,6 @@ Vue.filter('longDate', function (value) {
     return value.format('DD.MM.YYYY HH:mm')
   }
 })
+
+Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
+Vue.use(VueMarkdown)
