@@ -8,6 +8,7 @@ export default {
       fields: [
         { key: 'id', label: 'ID', sortable: true },
         { key: 'dev_id', label: 'Dev ID', sortable: true },
+        { key: 'desc', label: 'Popis' },
         { key: 'battery', label: 'Baterie', sortable: true },
         { key: 'value', label: 'Stav', sortable: true },
         { key: 'actions', label: 'Akce' }
@@ -106,6 +107,9 @@ export default {
           <a href="javascript:void(0)" v-on:click="edit(data.item)">
             {{data.item.dev_id}}
           </a>
+        </template>
+        <template v-slot:cell(desc)="data">
+          {{data.item.desc.substr(0, 20)}}
         </template>
         <template v-slot:cell(actions)="data">
           <b-button size="sm" variant="danger" v-on:click="saveState(data.item)">

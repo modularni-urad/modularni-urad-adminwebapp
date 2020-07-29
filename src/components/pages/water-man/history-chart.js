@@ -10,7 +10,9 @@ const options = {
       scaleLabel: {
         display: true,
         labelString: 'čas'
-      }
+      },
+      minRotation: 20,
+      time: { unit: 'day', displayFormats: { day: 'DD.MM.YYYY' } }
     }],
     yAxes: [{
       display: true,
