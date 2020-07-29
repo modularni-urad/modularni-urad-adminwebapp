@@ -1,6 +1,3 @@
-[submodule "src/src/taskman"]
-	path = src/src/taskman
-	url = https://github.com/vencax/open-taskman-webclient
 [submodule "src/taskman"]
 	path = src/taskman
 	url = https://github.com/vencax/open-taskman-webclient
