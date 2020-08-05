@@ -104,7 +104,7 @@ export default {
         :fields="fields"
       >
         <template v-slot:cell(dev_id)="data">
-          <a href="javascript:void(0)" v-on:click="edit(data.item)">
+          <a href="javascript:void(0)" v-on:click="openHistory(data.item)">
             {{data.item.dev_id}}
           </a>
         </template>
@@ -112,31 +112,36 @@ export default {
           {{data.item.desc.substr(0, 20)}}
         </template>
         <template v-slot:cell(actions)="data">
-          <b-button size="sm" variant="danger" v-on:click="saveState(data.item)">
-            <i class="fas fa-save"></i> uložit stav
-          </b-button>
-          <b-button size="sm" variant="primary" v-on:click="edit(data.item)">
-            <i class="fas fa-edit"></i> upravit
-          </b-button>
-          <b-button size="sm" variant="info" v-on:click="openHistory(data.item)">
-            <i class="fas fa-clock"></i> historie
-          </b-button>
+          <b-dropdown text="akce" size="sm" variant="primary">
+            <b-dropdown-item @click="saveState(data.item)" variant="danger">
+              <i class="fas fa-save"></i> uložit stav
+            </b-dropdown-item>
+            <b-dropdown-item @click="edit(data.item)" variant="primary">
+              <i class="fas fa-edit"></i> upravit
+            </b-dropdown-item>
+            <b-dropdown-item @click="openHistory(data.item)" variant="info">
+              <i class="fas fa-clock"></i> historie
+            </b-dropdown-item>
+          </b-dropdown>
         </template>
       </b-table>
 
-      <b-pagination
-        v-model="currentPage"
-        :total-rows="totalRows"
-        :per-page="perPage"
-        aria-controls="maps-table"
-      ></b-pagination>
+      <div class="float-left">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="totalRows"
+          :per-page="perPage"
+          aria-controls="maps-table"
+        ></b-pagination>
+      </div>
 
-      <b-dropdown id="pagesize-dropup" dropup text="Velikost stránky"
-        variant="primary" class="m-2">
-        <b-dropdown-item @click="setPageSize(5)">5</b-dropdown-item>
-        <b-dropdown-item @click="setPageSize(10)">10</b-dropdown-item>
-        <b-dropdown-item @click="setPageSize(50)">50</b-dropdown-item>
-      </b-dropdown>
+      <div class="float-right">
+        <b-dropdown dropup text="Velikost stránky" variant="primary">
+          <b-dropdown-item @click="setPageSize(5)">5</b-dropdown-item>
+          <b-dropdown-item @click="setPageSize(10)">10</b-dropdown-item>
+          <b-dropdown-item @click="setPageSize(50)">50</b-dropdown-item>
+        </b-dropdown>
+      </div>
 
       <b-modal size="xl" id="modal-add" title="Upravit" hide-footer>
         <item-form v-bind:onSubmit="onItemSubmit" v-bind:item="curr"></item-form>

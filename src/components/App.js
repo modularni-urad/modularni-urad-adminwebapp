@@ -32,6 +32,9 @@ export default {
           <li class="nav-item">
             <router-link class="nav-link" to="/taskman">Úkoly</router-link>
           </li>
+          <li class="nav-item" v-if="$store.getters.isMember('waterman')">
+            <router-link class="nav-link" to="/taskman">Vodoměry</router-link>
+          </li>
         </ul>
       </div>
       <button v-if="$store.getters.userLogged" class="btn btn-warning"
