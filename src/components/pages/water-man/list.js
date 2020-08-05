@@ -72,6 +72,10 @@ export default {
             this.$store.dispatch('toast', { message, type: 'error' })
           })
       }
+    },
+    rowClass: function (item, type) {
+      if (!item || type !== 'row') return
+      if (item.alerts) return 'table-danger'
     }
   },
   components: {
@@ -87,7 +91,7 @@ export default {
       </b-breadcrumb>
 
       <div class="float-right">
-        <a href="/gis/edit/" target="_blank">
+        <a href="/scan/api=waterman" target="_blank">
           <b-button variant="danger"><i class="fas fa-save"></i> Načítat</b-button>
         </a>
         <b-button variant="primary" @click="add">
@@ -102,6 +106,8 @@ export default {
         :busy.sync="isBusy"
         :items="myProvider"
         :fields="fields"
+        :tbody-tr-class="rowClass"
+        head-variant="dark"
       >
         <template v-slot:cell(dev_id)="data">
           <a href="javascript:void(0)" v-on:click="openHistory(data.item)">
