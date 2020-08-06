@@ -118,7 +118,7 @@ export default {
           {{data.item.desc.substr(0, 20)}}
         </template>
         <template v-slot:cell(actions)="data">
-          <b-dropdown text="akce" size="sm" variant="primary">
+          <b-dropdown text="akce" right size="sm" variant="primary">
             <b-dropdown-item @click="saveState(data.item)" variant="danger">
               <i class="fas fa-save"></i> uložit stav
             </b-dropdown-item>
