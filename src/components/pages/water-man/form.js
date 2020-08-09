@@ -8,15 +8,27 @@ export default Vue.extend({
     return {
       app_id: '',
       dev_id: '',
-      coef: '1000',
-      desc: ''
+      coef: 0.001,
+      start: 0,
+      desc: '',
+      sn: '',
+      type: '',
+      sensor_type: '',
+      sensor_sn: '',
+      pipe: ''
     }
   },
   validations: {
     app_id: { },
     dev_id: { required: validators.required },
     desc: { required: validators.required },
-    coef: { required: validators.required }
+    coef: { required: validators.required },
+    start: { required: validators.required },
+    sn: { required: validators.required },
+    type: { required: validators.required },
+    sensor_type: { },
+    sensor_sn: { },
+    pipe: { }
   },
   created () {
     this.$props.item && Object.assign(this.$data, this.$props.item)
@@ -81,6 +93,32 @@ export default Vue.extend({
           </b-form-group>
 
           <b-form-group
+            :state="!$v.sensor_type.$error"
+            label="Typ senzoru"
+            label-for="sensor_type-input"
+            invalid-feedback="Toto je povinné"
+          >
+            <b-form-input
+              id="sensor_type-input"
+              v-model="$v.sensor_type.$model"
+              :state="!$v.sensor_type.$error"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            :state="!$v.sensor_sn.$error"
+            label="Číslo senzoru"
+            label-for="sensor_sn-input"
+            invalid-feedback="Toto je povinné"
+          >
+            <b-form-input
+              id="sensor_sn-input"
+              v-model="$v.sensor_sn.$model"
+              :state="!$v.sensor_sn.$error"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
             :state="!$v.desc.$error"
             label="Popis"
             label-for="desc-input"
@@ -107,6 +145,59 @@ export default Vue.extend({
               :state="!$v.coef.$error"
             ></b-form-input>
           </b-form-group>
+
+          <b-form-group
+            :state="!$v.start.$error"
+            label="Start"
+            label-for="start-input"
+            invalid-feedback="Toto je povinné"
+          >
+            <b-form-input
+              id="start-input"
+              v-model="$v.start.$model"
+              :state="!$v.start.$error"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            :state="!$v.sn.$error"
+            label="Seriové číslo"
+            label-for="sn-input"
+            invalid-feedback="Toto je povinné"
+          >
+            <b-form-input
+              id="sn-input"
+              v-model="$v.sn.$model"
+              :state="!$v.sn.$error"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            :state="!$v.type.$error"
+            label="Typ vodoměru"
+            label-for="type-input"
+            invalid-feedback="Toto je povinné"
+          >
+            <b-form-input
+              id="type-input"
+              v-model="$v.type.$model"
+              :state="!$v.type.$error"
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            :state="!$v.pipe.$error"
+            label="Trubka"
+            label-for="pipe-input"
+            invalid-feedback="Toto je povinné"
+          >
+            <b-form-input
+              id="pipe-input"
+              v-model="$v.pipe.$model"
+              :state="!$v.pipe.$error"
+            ></b-form-input>
+          </b-form-group>
+
         </div>
 
       </div>

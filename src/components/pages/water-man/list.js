@@ -8,6 +8,8 @@ export default {
       fields: [
         { key: 'id', label: 'ID', sortable: true },
         { key: 'dev_id', label: 'Dev ID', sortable: true },
+        { key: 'sn', label: 'S/N', sortable: true },
+        { key: 'type', label: 'Typ', sortable: true },
         { key: 'desc', label: 'Popis' },
         { key: 'battery', label: 'Baterie', sortable: true },
         { key: 'value', label: 'Stav', sortable: true },
