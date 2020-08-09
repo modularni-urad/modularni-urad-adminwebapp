@@ -33,7 +33,7 @@ export default {
             <router-link class="nav-link" to="/taskman">Úkoly</router-link>
           </li>
           <li class="nav-item" v-if="$store.getters.isMember('waterman')">
-            <router-link class="nav-link" to="/taskman">Vodoměry</router-link>
+            <router-link class="nav-link" to="/waterman">Vodoměry</router-link>
           </li>
         </ul>
       </div>
