@@ -93,10 +93,13 @@ export default {
       </b-breadcrumb>
 
       <div class="float-right">
-        <a href="/scan/api=waterman" target="_blank">
+        <a href="/scan/api=waterman" target="_blank"
+          v-if="$store.getters.isMember('waterman_data')">
           <b-button variant="danger"><i class="fas fa-save"></i> Načítat</b-button>
         </a>
-        <b-button variant="primary" @click="add">
+        <b-button
+          v-if="$store.getters.isMember('waterman_admin')"
+          variant="primary" @click="add">
           <i class="fas fa-plus"></i> Přidat
         </b-button>
       </div>
@@ -121,10 +124,13 @@ export default {
         </template>
         <template v-slot:cell(actions)="data">
           <b-dropdown text="akce" right size="sm" variant="primary">
-            <b-dropdown-item @click="saveState(data.item)" variant="danger">
+            <b-dropdown-item
+              v-if="$store.getters.isMember('waterman_data')"
+              @click="saveState(data.item)" variant="danger">
               <i class="fas fa-save"></i> uložit stav
             </b-dropdown-item>
-            <b-dropdown-item @click="edit(data.item)" variant="primary">
+            <b-dropdown-item @click="edit(data.item)" variant="primary"
+              v-if="$store.getters.isMember('waterman_admin')">
               <i class="fas fa-edit"></i> upravit
             </b-dropdown-item>
             <b-dropdown-item @click="openHistory(data.item)" variant="info">
