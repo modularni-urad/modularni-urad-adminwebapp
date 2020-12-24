@@ -1,3 +1,12 @@
 [submodule "src/taskman"]
 	path = src/taskman
 	url = https://github.com/vencax/open-taskman-webclient
+[submodule "src/apps/groupman"]
+	path = src/apps/groupman
+	url = https://github.com/modularni-urad/groupman-webadmin
+[submodule "src/apps/userman"]
+	path = src/apps/userman
+	url = https://github.com/modularni-urad/userman-webadmin
+[submodule "src/apps/project-stack"]
+	path = src/apps/project-stack
+	url = https://github.com/modularni-urad/project-stack-webclient

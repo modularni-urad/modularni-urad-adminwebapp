@@ -32,6 +32,15 @@ export default {
           <li class="nav-item">
             <router-link class="nav-link" to="/taskman">Úkoly</router-link>
           </li>
+          <li class="nav-item" v-if="$store.getters.isMember('group_admin')">
+            <router-link class="nav-link" to="/groupman">Skupiny</router-link>
+          </li>
+          <li class="nav-item" v-if="$store.getters.isMember('user_admin')">
+            <router-link class="nav-link" to="/userman">Uživatelé</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/projects">Projekty</router-link>
+          </li>
           <li class="nav-item" v-if="$store.getters.isMember('waterman')">
             <router-link class="nav-link" to="/waterman">Vodoměry</router-link>
           </li>

@@ -1,4 +1,5 @@
-/* global Vue, _, moment, VueBootstrapTypeahead, VueMarkdown */
+/* global Vue, _, moment, VueBootstrapTypeahead, VueMarkdown,
+  VeeValidateRules, VeeValidate */
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -16,3 +17,8 @@ Vue.filter('longDate', function (value) {
 
 Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
 Vue.use(VueMarkdown)
+
+Vue.component('ValidationProvider', VeeValidate.ValidationProvider)
+Vue.component('ValidationObserver', VeeValidate.ValidationObserver)
+
+VeeValidate.extend('required', VeeValidateRules.required)
