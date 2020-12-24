@@ -37,19 +37,30 @@ export default function (router) {
       toast: function (ctx, opts) {
         Vue.$toast.open(opts)
       },
-      login: function (ctx, opts) {
-        return axios.post(`${API}/auth/login`, opts, {
-          withCredentials: false
-        }).then(res => {
-          this.commit('profile', res.data)
-          return res.data
-        })
+      login: async function (ctx, opts) {
+        try {
+          const reqOpts = { withCredentials: false }
+          const u = await axios.post(`${API}/public/user/login`, opts, reqOpts)
+          const user = u.data
+          const g = await axios.get(`${API}/groupman/mship/${user.id}/groups`)
+          user.groups = g.data
+          this.commit('profile', user)
+          return user
+        } catch (e) {
+          const message = e.response.data
+          this.dispatch('toast', { message, type: 'error' })
+        }
       },
       logout: async function (ctx, opts) {
-        await axios.post(`${API}/auth/logout`)
-        localStorage.removeItem(KEY)
-        this.commit('profile', null)
-        router.push('/')
+        try {
+          await axios.post(`${API}/public/user/logout`)
+          localStorage.removeItem(KEY)
+          this.commit('profile', null)
+          router.push('/')
+        } catch (e) {
+          const message = e.response.data
+          this.dispatch('toast', { message, type: 'error' })
+        }
       },
       init: async function (ctx, opts) {
         try {

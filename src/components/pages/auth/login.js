@@ -2,8 +2,8 @@ export default {
   data: () => {
     return {
       record: {
-        uname: '',
-        passwd: ''
+        username: '',
+        password: ''
       },
       error: null,
       errcount: 0,
@@ -27,7 +27,8 @@ export default {
   },
   computed: {
     submitDisabled: function () {
-      return this.$data.record.uname.length === 0 || this.$data.record.passwd.length === 0
+      return this.$data.record.username.length === 0 ||
+          this.$data.record.password.length === 0
     }
   },
   template: `
@@ -37,7 +38,7 @@ export default {
       <span class="input-group-text"><i class="fas fa-user"></i></span>
       </div>
       <input type="text" name="" class="form-control"
-        v-model='record.uname' placeholder="Email/Telefon">
+        v-model='record.username' placeholder="Email/Telefon">
     </div>
 
   <div class="input-group mb-2">
@@ -45,7 +46,7 @@ export default {
     <span class="input-group-text"><i class="fas fa-key"></i></span>
     </div>
     <input type="password" name="pwd" class="form-control"
-      v-model='record.passwd' placeholder="Heslo">
+      v-model='record.password' placeholder="Heslo">
   </div>
 
   <div clas="danger" v-if="error">
